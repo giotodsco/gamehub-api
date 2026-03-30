@@ -1,6 +1,9 @@
 package com.todesco.gamehub.service;
 
+import com.todesco.gamehub.dtos.request.CategoryRequest;
+import com.todesco.gamehub.dtos.response.CategoryResponse;
 import com.todesco.gamehub.entity.Category;
+import com.todesco.gamehub.mapper.CategoryMapper;
 import com.todesco.gamehub.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,16 +16,23 @@ public class CategoryService {
 
     private CategoryRepository categoryRepository;
 
-    public List<Category> listAllCategory(){
-        return categoryRepository.findAll();
+    public List<CategoryResponse> listAllCategory(){
+        return categoryRepository.findAll().stream()
+                .map(CategoryMapper::toResponse)
+                .toList();
     }
 
-    public Category createCategory(Category category){
-        return categoryRepository.save(category);
+    public CategoryResponse createCategory(CategoryRequest categoryRequest){
+        Category category1 = categoryRepository.save(CategoryMapper.toCategory(categoryRequest));
+        CategoryResponse categorySaved = CategoryMapper.toResponse(category1);
+        return categorySaved;
     }
 
-    public Category listPerId(Long id){
-        return categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public CategoryResponse listPerId(Long id){
+        Category idCategory = categoryRepository.findById(id).
+                orElseThrow(() -> new RuntimeException("User not found"));
+        CategoryResponse idCategorySaved = CategoryMapper.toResponse(idCategory);
+        return idCategorySaved;
     }
 
     public void deletePerId(Long id){

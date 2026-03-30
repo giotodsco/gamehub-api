@@ -1,6 +1,9 @@
 package com.todesco.gamehub.controller;
 
+import com.todesco.gamehub.dtos.request.CategoryRequest;
+import com.todesco.gamehub.dtos.response.CategoryResponse;
 import com.todesco.gamehub.entity.Category;
+import com.todesco.gamehub.mapper.CategoryMapper;
 import com.todesco.gamehub.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,24 +20,24 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping("/find/all")
-    public ResponseEntity<List<Category>> listAllCategory(){
+    public ResponseEntity<List<CategoryResponse>> listAllCategory(){
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.listAllCategory());
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<Category> listPerId(@PathVariable Long id){
+    public ResponseEntity<CategoryResponse> listPerId(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.listPerId(id));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Category> createCategory(@RequestBody Category category){
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(category));
+    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest){
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(categoryRequest));
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id){
         categoryService.deletePerId(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
