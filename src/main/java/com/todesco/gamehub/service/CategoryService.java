@@ -30,7 +30,7 @@ public class CategoryService {
 
     public CategoryResponse listPerId(Long id){
         Category idCategory = categoryRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("User not found"));
+                orElseThrow(() -> new RuntimeException("Category not found"));
         CategoryResponse idCategorySaved = CategoryMapper.toResponse(idCategory);
         return idCategorySaved;
     }
