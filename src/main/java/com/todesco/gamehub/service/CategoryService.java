@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryService {
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     public List<CategoryResponse> listAllCategory(){
         return categoryRepository.findAll().stream()
@@ -29,10 +29,13 @@ public class CategoryService {
     }
 
     public CategoryResponse listPerId(Long id){
-        Category idCategory = categoryRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("Category not found"));
-        CategoryResponse idCategorySaved = CategoryMapper.toResponse(idCategory);
-        return idCategorySaved;
+        return CategoryMapper.toResponse(listEntityPerId(id));
+    }
+
+    public Category listEntityPerId(Long id){
+        return categoryRepository.findById(id).orElseThrow(() ->
+                new RuntimeException("Category not found"));
+
     }
 
     public void deletePerId(Long id){
