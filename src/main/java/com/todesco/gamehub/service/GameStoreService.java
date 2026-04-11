@@ -32,9 +32,13 @@ public class GameStoreService {
     }
 
     public GameStoreResponse listPerId(Long id){
-        GameStore idStore = gameStoreRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("Store not found"));
+        GameStore idStore = listEntityPerId(id);
         return GameStoreMapper.toResponse(idStore);
+    }
+
+    public GameStore listEntityPerId(Long id){
+        return gameStoreRepository.findById(id).
+                orElseThrow(() -> new RuntimeException("GameStore not found"));
     }
 
     public void deletePerId(Long id){
