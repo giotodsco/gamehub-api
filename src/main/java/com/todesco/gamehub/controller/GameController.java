@@ -38,4 +38,9 @@ public class GameController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<GameResponse> update(@PathVariable Long id, @RequestBody GameRequest gameRequest){
+        return ResponseEntity.ok(gameService.updateGame(id, gameRequest));
+    }
+
 }
