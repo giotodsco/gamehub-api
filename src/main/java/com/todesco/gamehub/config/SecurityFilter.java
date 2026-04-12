@@ -19,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
 
-    private TokenConfig tokenConfig;
+    private final TokenConfig tokenConfig;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
