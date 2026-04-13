@@ -6,8 +6,10 @@ import com.todesco.gamehub.dtos.request.UserRequest;
 import com.todesco.gamehub.dtos.response.LoginResponse;
 import com.todesco.gamehub.dtos.response.UserResponse;
 import com.todesco.gamehub.entity.User;
+import com.todesco.gamehub.exception.UserNameOrPasswordInvalidException;
 import com.todesco.gamehub.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,16 +37,17 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest){
-        UsernamePasswordAuthenticationToken userAndPass =
-                new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password());
+        try {
+            UsernamePasswordAuthenticationToken userAndPass =
+                    new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password());
 
-        Authentication authentication = authenticationManager.authenticate(userAndPass);
+            Authentication authentication = authenticationManager.authenticate(userAndPass);
+            User user = (User) authentication.getPrincipal();
+            String token = tokenConfig.generateToken(user);
 
-        User user = (User) authentication.getPrincipal();
-
-        String token = tokenConfig.generateToken(user);
-
-        return ResponseEntity.ok(new LoginResponse(token));
-
+            return ResponseEntity.ok(new LoginResponse(token));
+        } catch (BadCredentialsException e){
+            throw new UserNameOrPasswordInvalidException("Usuário ou senha inválido");
+        }
     }
 }
