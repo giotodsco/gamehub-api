@@ -3,6 +3,7 @@ package com.todesco.gamehub.controller;
 import com.todesco.gamehub.dtos.request.GameRequest;
 import com.todesco.gamehub.dtos.response.GameResponse;
 import com.todesco.gamehub.service.GameService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class GameController {
     private final GameService gameService;
 
     @PostMapping("/create")
-    public ResponseEntity<GameResponse> createGame(@RequestBody GameRequest gameRequest){
+    public ResponseEntity<GameResponse> createGame(@Valid @RequestBody GameRequest gameRequest){
         return ResponseEntity.status(HttpStatus.CREATED).body(gameService.createGame(gameRequest));
     }
 

@@ -5,6 +5,7 @@ import com.todesco.gamehub.dtos.request.GameStoreRequest;
 import com.todesco.gamehub.dtos.response.CategoryResponse;
 import com.todesco.gamehub.dtos.response.GameStoreResponse;
 import com.todesco.gamehub.service.GameStoreService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class GameStoreController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<GameStoreResponse> createGameStore(@RequestBody GameStoreRequest gameStoreRequest){
+    public ResponseEntity<GameStoreResponse> createGameStore(@Valid @RequestBody GameStoreRequest gameStoreRequest){
         return ResponseEntity.status(HttpStatus.CREATED).body(gameStoreService.createGameStore(gameStoreRequest));
     }
 
