@@ -1,5 +1,9 @@
 package com.todesco.gamehub.dtos.request;
 
 
-public record GameStoreRequest(String name) {
+import jakarta.validation.constraints.NotEmpty;
+
+public record GameStoreRequest(
+        @NotEmpty(message = "Nome da GameStore é obrigatório.")
+        String name) {
 }
